@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#6c47ff">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>TeamUp</title>
+<style>
+:root{--pri:#6c47ff;--pri-d:#5636d6;--bg:#f5f3ff;--card:#fff;--txt:#1d1b2e;--mute:#6f6b85;--ok:#1fa971;--no:#e5484d;--maybe:#f5a524;--line:#e7e4f5}
+@media(prefers-color-scheme:dark){:root{--bg:#14121f;--card:#1e1b2e;--txt:#f1effa;--mute:#9b97b3;--line:#2d2944}}
+*{box-sizing:border-box;margin:0}
+body{font:16px/1.4 system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--txt);min-height:100dvh;padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+header{background:var(--pri);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 16px 18px;position:sticky;top:0;z-index:5}
+header h1{font-size:20px}header p{opacity:.85;font-size:13px}
+.row{display:flex;align-items:center;gap:10px}.sp{flex:1}
+main{padding:14px 16px;max-width:560px;margin:auto}
+.card{background:var(--card);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px #0001;border:1px solid var(--line)}
+.date{width:52px;height:56px;border-radius:12px;background:var(--bg);display:grid;place-items:center;text-align:center;font-weight:700;line-height:1.1;color:var(--pri);flex:none}
+.date small{display:block;font-size:11px;font-weight:600;color:var(--mute);text-transform:uppercase}
+.t{font-weight:650}.m{color:var(--mute);font-size:13px}
+.chip{font-size:12px;padding:2px 9px;border-radius:99px;font-weight:600;background:var(--bg);color:var(--mute)}
+.chip.ok{background:#1fa97122;color:var(--ok)}.chip.no{background:#e5484d22;color:var(--no)}.chip.maybe{background:#f5a52422;color:var(--maybe)}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);margin:18px 0 8px}
+.btns{display:flex;gap:8px;margin-top:12px}
+button,.btn{font:inherit;border:0;border-radius:12px;padding:10px 14px;cursor:pointer;background:var(--bg);color:var(--txt);font-weight:600}
+.btns button{flex:1;border:2px solid transparent}
+.btns button.on.ok{background:var(--ok);color:#fff}.btns button.on.no{background:var(--no);color:#fff}.btns button.on.maybe{background:var(--maybe);color:#fff}
+.primary{background:var(--pri);color:#fff;width:100%}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;display:flex;margin-top:10px}
+.bar i{display:block;height:100%}
+.av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px;flex:none}
+label{display:block;font-size:13px;color:var(--mute);margin:12px 0 4px}
+input,select,textarea{font:inherit;width:100%;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--txt)}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:6}
+nav button{flex:1;background:none;border-radius:0;padding:10px 0 8px;font-size:11px;color:var(--mute);display:grid;gap:2px;justify-items:center}
+nav button span{font-size:22px;line-height:1}nav button.on{color:var(--pri)}
+.fab{position:fixed;right:18px;bottom:calc(86px + env(safe-area-inset-bottom));width:56px;height:56px;border-radius:50%;background:var(--pri);color:#fff;font-size:30px;box-shadow:0 6px 16px #6c47ff66;padding:0;z-index:7}
+.back{background:none;color:#fff;padding:0 8px 0 0;font-size:22px}
+.msg{background:var(--bg);border-radius:12px;padding:8px 12px;margin-top:6px;font-size:14px}
+#install{display:none;margin-bottom:12px}
+</style>
+</head>
+<body>
+<header><div class="row"><button class="back" id="back" hidden aria-label="Zurück">‹</button><div><h1 id="title">Events</h1><p id="sub">FC Büro United</p></div></div></header>
+<main id="view"></main>
+<button class="fab" id="fab" aria-label="Neues Event">+</button>
+<nav>
+  <button data-tab="events"><span>📅</span>Events</button>
+  <button data-tab="team"><span>👥</span>Team</button>
+  <button data-tab="chat"><span>💬</span>Chat</button>
+</nav>
+<script>
+const COLORS=['#6c47ff','#e5484d','#1fa971','#f5a524','#0ea5e9','#d946ef'];
+const ME='Du';
+const DEFAULT={
+  members:['Du','Anna','Ben','Clara','David','Emre','Frieda','Jonas'],
+  events:[
+    {id:1,title:'Escape Room',type:'🔐',date:'2026-11-05T18:30',place:'Exit Berlin, Torstr. 12',note:'Treffpunkt 18:15 vor dem Eingang. Danach Pizza!',rsvp:{Anna:'ok',Ben:'ok',Clara:'maybe',David:'no',Emre:'ok'},chat:[['Anna','Freu mich! 🎉'],['Ben','Wer fährt mit dem Auto?']]},
+    {id:2,title:'Sommerfest-Planung',type:'🎈',date:'2026-11-14T12:00',place:'Büro Küche',note:'Ideen sammeln & Aufgaben verteilen.',rsvp:{Anna:'ok',Frieda:'ok'},chat:[]},
+    {id:3,title:'Bowling-Abend',type:'🎳',date:'2026-09-30T19:00',place:'Bowlingcenter Mitte',note:'',rsvp:{Du:'ok',Anna:'ok',Ben:'no'},chat:[]}
+  ]
+};
+let S;try{S=JSON.parse(localStorage.getItem('teamup'))||DEFAULT}catch{S=DEFAULT}
+const save=()=>{try{localStorage.setItem('teamup',JSON.stringify(S))}catch{}};
+const $=s=>document.querySelector(s),view=$('#view');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const col=n=>COLORS[[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%COLORS.length];
+const av=n=>`<div class="av" style="background:${col(n)}">${esc(n[0])}</div>`;
+const fmt=(d,o)=>new Date(d).toLocaleString('de-DE',o);
+const count=e=>{const c={ok:0,maybe:0,no:0};Object.values(e.rsvp).forEach(v=>c[v]++);return c};
+const LBL={ok:'Zusage',maybe:'Vielleicht',no:'Absage'};
+let tab='events',openId=null,creating=false;
+
+function render(){
+  const e=S.events.find(x=>x.id===openId);
+  $('#back').hidden=!(e||creating);
+  $('#fab').hidden=!!(e||creating)||tab!=='events';
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab&&!e&&!creating));
+  if(creating)return renderCreate();
+  if(e)return renderDetail(e);
+  if(tab==='events')return renderList();
+  if(tab==='team')return renderTeam();
+  renderChat();
+}
+function card(e){
+  const c=count(e),mine=e.rsvp[ME],tot=c.ok+c.maybe+c.no||1;
+  return `<div class="card" data-open="${e.id}" style="cursor:pointer">
+    <div class="row"><div class="date">${fmt(e.date,{day:'2-digit'})}<small>${fmt(e.date,{month:'short'})}</small></div>
+    <div class="sp"><div class="t">${e.type} ${esc(e.title)}</div><div class="m">${fmt(e.date,{weekday:'short',hour:'2-digit',minute:'2-digit'})} Uhr · ${esc(e.place)}</div></div>
+    ${mine?`<span class="chip ${mine}">${LBL[mine]}</span>`:'<span class="chip">Offen</span>'}</div>
+    <div class="bar"><i style="width:${c.ok/tot*100}%;background:var(--ok)"></i><i style="width:${c.maybe/tot*100}%;background:var(--maybe)"></i><i style="width:${c.no/tot*100}%;background:var(--no)"></i></div>
+    <div class="m" style="margin-top:6px">✔ ${c.ok} · ? ${c.maybe} · ✘ ${c.no}</div></div>`;
+}
+function renderList(){
+  $('#title').textContent='Events';$('#sub').textContent='FC Büro United';
+  const now=Date.now(),up=S.events.filter(e=>new Date(e.date)>=now).sort((a,b)=>a.date.localeCompare(b.date)),past=S.events.filter(e=>new Date(e.date)<now);
+  view.innerHTML=`<div class="card" id="install"><div class="row"><div class="sp"><div class="t">App installieren</div><div class="m">Direkt vom Homescreen starten</div></div><button class="primary" style="width:auto" id="doInstall">Installieren</button></div></div>
+  <h2>Anstehend</h2>${up.map(card).join('')||'<p class="m">Noch keine Events – leg das erste an!</p>'}
+  ${past.length?'<h2>Vergangen</h2>'+past.map(card).join(''):''}`;
+  if(deferred){$('#install').style.display='block';$('#doInstall').onclick=async()=>{deferred.prompt();await deferred.userChoice;deferred=null;render()}}
+}
+function renderDetail(e){
+  $('#title').textContent=e.type+' '+e.title;$('#sub').textContent=fmt(e.date,{weekday:'long',day:'2-digit',month:'long',hour:'2-digit',minute:'2-digit'})+' Uhr';
+  const groups=['ok','maybe','no'].map(k=>[k,S.members.filter(m=>e.rsvp[m]===k)]);
+  const open=S.members.filter(m=>!e.rsvp[m]);
+  view.innerHTML=`<div class="card"><div class="m">📍 ${esc(e.place)}</div>${e.note?`<p style="margin-top:8px">${esc(e.note)}</p>`:''}
+    <div class="btns">${['ok','maybe','no'].map(k=>`<button class="${k} ${e.rsvp[ME]===k?'on':''}" data-rsvp="${k}">${{ok:'✔ Dabei',maybe:'? Vielleicht',no:'✘ Nein'}[k]}</button>`).join('')}</div></div>
+  ${groups.map(([k,l])=>`<h2>${LBL[k]} (${l.length})</h2><div class="card">${l.map(m=>`<div class="row" style="margin:6px 0">${av(m)}<span>${esc(m)}</span></div>`).join('')||'<span class="m">Niemand</span>'}</div>`).join('')}
+  <h2>Noch offen (${open.length})</h2><div class="card"><div class="m">${open.map(esc).join(', ')||'Alle haben geantwortet 🎉'}</div>${open.length?'<button class="primary" style="margin-top:10px" id="remind">Erinnerung senden</button>':''}</div>
+  <h2>Diskussion</h2><div class="card">${e.chat.map(([n,t])=>`<div class="msg"><b>${esc(n)}</b> ${esc(t)}</div>`).join('')}
+    <form class="row" id="cf" style="margin-top:10px"><input placeholder="Nachricht…" name="t" autocomplete="off"><button class="primary" style="width:auto">➤</button></form></div>
+  <button id="del" style="color:var(--no);width:100%">Event löschen</button>`;
+}
+function renderCreate(){
+  $('#title').textContent='Neues Event';$('#sub').textContent='Das Team wird benachrichtigt';
+  const d=new Date(Date.now()+7*864e5);d.setHours(18,0,0,0);
+  view.innerHTML=`<form class="card" id="nf"><label>Titel</label><input name="title" required placeholder="z. B. Grillabend">
+  <label>Art</label><select name="type">${['🎉 Party','🍕 Essen','🎳 Sport','🔐 Escape Room','🎤 Karaoke','🏔️ Ausflug'].map(o=>`<option value="${o.split(' ')[0]}">${o}</option>`).join('')}</select>
+  <label>Datum &amp; Uhrzeit</label><input type="datetime-local" name="date" required value="${new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,16)}">
+  <label>Ort</label><input name="place" placeholder="Adresse oder Ort">
+  <label>Notiz</label><textarea name="note" rows="3" placeholder="Infos fürs Team"></textarea>
+  <button class="primary" style="margin-top:16px">Event erstellen</button></form>`;
+}
+function renderTeam(){
+  $('#title').textContent='Team';$('#sub').textContent=S.members.length+' Mitglieder';
+  const att=m=>S.events.filter(e=>e.rsvp[m]==='ok').length;
+  view.innerHTML=`<div class="card">${S.members.map(m=>`<div class="row" style="margin:10px 0">${av(m)}<div class="sp"><div class="t">${esc(m)}</div><div class="m">${att(m)} Zusagen</div></div></div>`).join('')}</div>
+  <form class="row" id="mf"><input name="n" placeholder="Neues Mitglied" required><button class="primary" style="width:auto">+</button></form>
+  <button class="primary" style="margin-top:12px" id="share">Einladungslink teilen</button>`;
+}
+function renderChat(){
+  $('#title').textContent='Chat';$('#sub').textContent='Alle Event-Diskussionen';
+  const all=S.events.flatMap(e=>e.chat.map(([n,t])=>({e,n,t})));
+  view.innerHTML=all.map(({e,n,t})=>`<div class="card"><div class="m">${e.type} ${esc(e.title)}</div><div style="margin-top:4px"><b>${esc(n)}</b> ${esc(t)}</div></div>`).join('')||'<p class="m">Noch keine Nachrichten.</p>';
+}
+
+document.addEventListener('click',async ev=>{
+  const t=ev.target.closest('[data-open],[data-rsvp],[data-tab],#back,#fab,#del,#remind,#share');if(!t)return;
+  const e=S.events.find(x=>x.id===openId);
+  if(t.dataset.open){openId=+t.dataset.open}
+  else if(t.dataset.rsvp){e.rsvp[ME]=e.rsvp[ME]===t.dataset.rsvp?undefined:t.dataset.rsvp;if(!e.rsvp[ME])delete e.rsvp[ME];save()}
+  else if(t.dataset.tab){tab=t.dataset.tab;openId=null;creating=false}
+  else if(t.id==='back'){openId=null;creating=false}
+  else if(t.id==='fab'){creating=true}
+  else if(t.id==='del'){if(confirm('Event wirklich löschen?')){S.events=S.events.filter(x=>x!==e);openId=null;save()}}
+  else if(t.id==='remind'){t.textContent='✔ Erinnerung gesendet (Mockup)';t.disabled=true;return}
+  else if(t.id==='share'){const d={title:'TeamUp',text:'Komm in unser Team!',url:location.href};navigator.share?navigator.share(d).catch(()=>{}):(navigator.clipboard?.writeText(d.url),t.textContent='Link kopiert');return}
+  render();scrollTo(0,0);
+});
+document.addEventListener('submit',ev=>{
+  ev.preventDefault();const f=ev.target,d=Object.fromEntries(new FormData(f));
+  if(f.id==='nf'){const id=Date.now();S.events.push({id,title:d.title,type:d.type,date:d.date,place:d.place,note:d.note,rsvp:{[ME]:'ok'},chat:[]});creating=false;openId=id}
+  else if(f.id==='cf'){if(!d.t.trim())return;S.events.find(x=>x.id===openId).chat.push([ME,d.t])}
+  else if(f.id==='mf'){S.members.push(d.n.trim())}
+  save();render();
+});
+
+let deferred;
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;if(tab==='events'&&!openId&&!creating)render()});
+if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+render();
+</script>
+</body>
+</html>

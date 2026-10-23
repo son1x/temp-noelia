@@ -1,0 +1,209 @@
+<title>TeamUp Teamevents</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: phone-sized app column, sticky header, fixed bottom tab bar, centered on wide screens */
+:root{
+  --bg:#eef1f7;--surface:#fff;--ink:#141a2e;--mute:#5d6580;--line:#dde2ef;
+  --accent:#2f4cdd;--on-accent:#fff;--tint:#e6ebff;
+  --ok:#17825a;--maybe:#b86e00;--no:#cc3340;
+  --ok-bg:#dcf3e8;--maybe-bg:#fbeacb;--no-bg:#fbe0e3;
+  --display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --body:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1222;--surface:#181e35;--ink:#eef0fa;--mute:#9aa2c2;--line:#2a3254;
+  --accent:#7f94ff;--on-accent:#0e1222;--tint:#232c57;
+  --ok:#5fd6a0;--maybe:#f0b45a;--no:#ff7f8a;
+  --ok-bg:#173a2e;--maybe-bg:#3d2f14;--no-bg:#402027;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1222;--surface:#181e35;--ink:#eef0fa;--mute:#9aa2c2;--line:#2a3254;
+  --accent:#7f94ff;--on-accent:#0e1222;--tint:#232c57;
+  --ok:#5fd6a0;--maybe:#f0b45a;--no:#ff7f8a;
+  --ok-bg:#173a2e;--maybe-bg:#3d2f14;--no-bg:#402027;color-scheme:dark}
+
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.45 var(--body);min-height:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--accent)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.app{max-width:480px;margin-inline:auto;min-height:100vh;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--accent);color:var(--on-accent);
+  padding-block:16px 18px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.head{display:flex;align-items:center;gap:10px}
+header h1{font:700 22px/1.15 var(--display);text-wrap:balance}
+header p{font-size:13px;opacity:.85;margin-top:2px}
+.back{background:none;color:inherit;font-size:28px;line-height:1;padding:0 6px 4px 0}
+main{display:grid;gap:12px;padding-block:14px 8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+h2{font:600 12px/1 var(--body);text-transform:uppercase;letter-spacing:.08em;color:var(--mute);margin-top:8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}
+.row{display:flex;align-items:center;gap:12px;min-width:0}
+.grow{flex:1;min-width:0}
+.t{font-weight:600}.m{color:var(--mute);font-size:14px}
+.ev{display:block;width:100%;text-align:left;background:var(--surface)}
+.date{flex:none;width:54px;padding:6px 0;border-radius:10px;background:var(--tint);color:var(--accent);text-align:center;font:700 22px/1 var(--display);font-variant-numeric:tabular-nums}
+.date small{display:block;margin-top:3px;font:600 11px/1 var(--body);letter-spacing:.06em;text-transform:uppercase}
+.chip{flex:none;font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--tint);color:var(--mute)}
+.chip.ok{background:var(--ok-bg);color:var(--ok)}.chip.maybe{background:var(--maybe-bg);color:var(--maybe)}.chip.no{background:var(--no-bg);color:var(--no)}
+.bar{display:flex;height:8px;border-radius:99px;overflow:hidden;background:var(--line);margin-top:12px}
+.bar i{display:block;height:100%}
+.counts{display:flex;gap:14px;margin-top:6px;font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums}
+.counts b{color:var(--ink)}
+
+.rsvp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.rsvp button{padding:11px 6px;border-radius:12px;background:var(--bg);border:2px solid var(--line);font-weight:600;font-size:14px}
+.rsvp button.on.ok{background:var(--ok);border-color:var(--ok);color:var(--surface)}
+.rsvp button.on.maybe{background:var(--maybe);border-color:var(--maybe);color:var(--surface)}
+.rsvp button.on.no{background:var(--no);border-color:var(--no);color:var(--surface)}
+.btn{background:var(--accent);color:var(--on-accent);font-weight:600;padding:12px 16px;border-radius:12px;width:100%}
+.btn.inline{width:auto}
+.btn.ghost{background:none;color:var(--no);border:1px solid var(--line)}
+.btn:disabled{opacity:.6;cursor:default}
+.av{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:700 13px var(--display);color:var(--on-accent)}
+.msg{background:var(--bg);border-radius:10px;padding:8px 12px;font-size:14px;margin-bottom:6px}
+.who{display:flex;flex-wrap:wrap;gap:8px 12px}
+
+label{display:block;font-size:13px;color:var(--mute);margin:14px 0 4px}
+label:first-child{margin-top:0}
+input,select,textarea{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg)}
+
+.fab{position:fixed;right:calc(max(16px,env(safe-area-inset-right,0px)) + max(0px,(100vw - 480px)/2));bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:6;
+  width:56px;height:56px;border-radius:50%;background:var(--accent);color:var(--on-accent);font-size:30px;line-height:1;box-shadow:0 6px 18px rgba(20,26,46,.3)}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.tabs{max-width:480px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr)}
+.tabs button{background:none;padding:10px 0;font-size:13px;font-weight:500;color:var(--mute);display:grid;gap:3px;justify-items:center}
+.tabs svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tabs button.on{color:var(--accent);font-weight:600}
+.sample{font-size:12px;color:var(--mute);text-align:center;padding:4px 0 0}
+@media (prefers-reduced-motion:no-preference){.card,.btn{transition:transform .12s}.ev:active,.btn:active{transform:scale(.985)}}
+</style>
+
+<div class="app">
+  <header>
+    <div class="head">
+      <button class="back" id="back" hidden aria-label="Zurück">‹</button>
+      <div><h1 id="title">Events</h1><p id="sub">FC Büro United</p></div>
+    </div>
+  </header>
+  <main id="view"></main>
+</div>
+<button class="fab" id="fab" aria-label="Neues Event">+</button>
+<nav><div class="tabs">
+  <button data-tab="events"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Events</button>
+  <button data-tab="team"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.4c2.2.7 3.5 2.5 3.5 5.6"/></svg>Team</button>
+  <button data-tab="chat"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>Chat</button>
+</div></nav>
+
+<script>
+const ME='Du';
+const COLORS=['#2f4cdd','#cc3340','#17825a','#b86e00','#0b7fa8','#9a3fc4'];
+const DEFAULT={
+  members:['Du','Anna','Ben','Clara','David','Emre','Frieda','Jonas'],
+  events:[
+    {id:1,title:'Escape Room',date:'2026-11-05T18:30',place:'Exit Berlin, Torstr. 12',note:'Treffpunkt 18:15 vor dem Eingang. Danach Pizza.',rsvp:{Anna:'ok',Ben:'ok',Clara:'maybe',David:'no',Emre:'ok'},chat:[['Anna','Freu mich!'],['Ben','Wer fährt mit dem Auto?']]},
+    {id:2,title:'Sommerfest-Planung',date:'2026-11-14T12:00',place:'Büro-Küche',note:'Ideen sammeln und Aufgaben verteilen.',rsvp:{Anna:'ok',Frieda:'ok'},chat:[]},
+    {id:3,title:'Bowling-Abend',date:'2026-09-30T19:00',place:'Bowlingcenter Mitte',note:'',rsvp:{Du:'ok',Anna:'ok',Ben:'no'},chat:[['Du','Danke an alle, war super.']]}
+  ]
+};
+let S=DEFAULT;
+try{const r=localStorage.getItem('teamup');if(r)S=JSON.parse(r)}catch(e){}
+const save=()=>{try{localStorage.setItem('teamup',JSON.stringify(S))}catch(e){}};
+const $=s=>document.querySelector(s),view=$('#view');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=(d,o)=>new Date(d).toLocaleString('de-DE',o);
+const col=n=>COLORS[[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%COLORS.length];
+const av=n=>`<div class="av" style="background:${col(n)}">${esc(n[0])}</div>`;
+const count=e=>{const c={ok:0,maybe:0,no:0};Object.values(e.rsvp).forEach(v=>c[v]++);return c};
+const LBL={ok:'Zusage',maybe:'Vielleicht',no:'Absage'};
+let tab='events',openId=null,creating=false,confirmDel=false;
+
+function render(){
+  const e=S.events.find(x=>x.id===openId);
+  $('#back').hidden=!(e||creating);
+  $('#fab').hidden=!!(e||creating)||tab!=='events';
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab&&!e&&!creating));
+  if(creating)return renderCreate();
+  if(e)return renderDetail(e);
+  ({events:renderList,team:renderTeam,chat:renderChat})[tab]();
+}
+function card(e){
+  const c=count(e),mine=e.rsvp[ME],tot=(c.ok+c.maybe+c.no)||1;
+  return `<button class="card ev" data-open="${e.id}">
+    <div class="row"><div class="date">${fmt(e.date,{day:'2-digit'})}<small>${fmt(e.date,{month:'short'}).replace('.','')}</small></div>
+    <div class="grow"><div class="t">${esc(e.title)}</div><div class="m">${fmt(e.date,{weekday:'short',hour:'2-digit',minute:'2-digit'})} Uhr · ${esc(e.place)}</div></div>
+    ${mine?`<span class="chip ${mine}">${LBL[mine]}</span>`:'<span class="chip">Offen</span>'}</div>
+    <div class="bar"><i style="width:${c.ok/tot*100}%;background:var(--ok)"></i><i style="width:${c.maybe/tot*100}%;background:var(--maybe)"></i><i style="width:${c.no/tot*100}%;background:var(--no)"></i></div>
+    <div class="counts"><span><b>${c.ok}</b> dabei</span><span><b>${c.maybe}</b> vielleicht</span><span><b>${c.no}</b> nein</span></div></button>`;
+}
+function renderList(){
+  $('#title').textContent='Events';$('#sub').textContent='FC Büro United';
+  const now=Date.now();
+  const up=S.events.filter(e=>new Date(e.date)>=now).sort((a,b)=>a.date.localeCompare(b.date));
+  const past=S.events.filter(e=>new Date(e.date)<now).sort((a,b)=>b.date.localeCompare(a.date));
+  view.innerHTML=`<h2>Anstehend</h2>${up.map(card).join('')||'<p class="m">Noch keine Events. Lege mit + das erste an.</p>'}
+  ${past.length?'<h2>Vergangen</h2>'+past.map(card).join(''):''}
+  <p class="sample">Beispieldaten, nur in diesem Browser gespeichert</p>`;
+}
+function renderDetail(e){
+  $('#title').textContent=e.title;
+  $('#sub').textContent=fmt(e.date,{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'})+' Uhr';
+  const groups=['ok','maybe','no'].map(k=>[k,S.members.filter(m=>e.rsvp[m]===k)]);
+  const open=S.members.filter(m=>!e.rsvp[m]);
+  view.innerHTML=`<div class="card"><div class="m">${esc(e.place)}</div>${e.note?`<p style="margin-top:8px">${esc(e.note)}</p>`:''}
+    <div class="rsvp">${['ok','maybe','no'].map(k=>`<button class="${k} ${e.rsvp[ME]===k?'on':''}" data-rsvp="${k}" aria-pressed="${e.rsvp[ME]===k}">${{ok:'Dabei',maybe:'Vielleicht',no:'Nein'}[k]}</button>`).join('')}</div></div>
+  ${groups.map(([k,l])=>`<h2>${LBL[k]} (${l.length})</h2><div class="card">${l.length?`<div class="who">${l.map(m=>`<span class="row">${av(m)}${esc(m)}</span>`).join('')}</div>`:'<span class="m">Niemand</span>'}</div>`).join('')}
+  <h2>Noch offen (${open.length})</h2><div class="card"><div class="m">${open.map(esc).join(', ')||'Alle haben geantwortet.'}</div>${open.length?'<button class="btn" style="margin-top:12px" id="remind">Erinnerung senden</button>':''}</div>
+  <h2>Diskussion</h2><div class="card">${e.chat.map(([n,t])=>`<div class="msg"><b>${esc(n)}</b> ${esc(t)}</div>`).join('')}
+    <form class="row" id="cf" style="margin-top:8px"><input id="chat-in" name="t" placeholder="Nachricht schreiben" aria-label="Nachricht" autocomplete="off"><button class="btn inline">Senden</button></form></div>
+  <button class="btn ghost" id="del">${confirmDel?'Wirklich löschen? Nochmal tippen':'Event löschen'}</button>`;
+}
+function renderCreate(){
+  $('#title').textContent='Neues Event';$('#sub').textContent='Das Team kann direkt antworten';
+  const d=new Date(Date.now()+7*864e5);d.setHours(18,0,0,0);
+  const v=new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,16);
+  view.innerHTML=`<form class="card" id="nf">
+  <label for="f-title">Titel</label><input id="f-title" name="title" required placeholder="z. B. Grillabend">
+  <label for="f-date">Datum und Uhrzeit</label><input id="f-date" type="datetime-local" name="date" required value="${v}">
+  <label for="f-place">Ort</label><input id="f-place" name="place" placeholder="Adresse oder Ort">
+  <label for="f-note">Notiz</label><textarea id="f-note" name="note" rows="3" placeholder="Infos fürs Team"></textarea>
+  <button class="btn" style="margin-top:18px">Event erstellen</button></form>`;
+}
+function renderTeam(){
+  $('#title').textContent='Team';$('#sub').textContent=S.members.length+' Mitglieder';
+  const att=m=>S.events.filter(e=>e.rsvp[m]==='ok').length;
+  view.innerHTML=`<div class="card" style="display:grid;gap:12px">${S.members.map(m=>`<div class="row">${av(m)}<div class="grow"><div class="t">${esc(m)}</div></div><span class="m">${att(m)} Zusagen</span></div>`).join('')}</div>
+  <form class="row" id="mf"><input id="m-in" name="n" placeholder="Neues Mitglied" aria-label="Neues Mitglied" required><button class="btn inline">Hinzufügen</button></form>
+  <div class="card"><div class="t">Einladungslink</div><div class="m" style="margin:4px 0 10px">Nur im Mockup, es wird kein echter Link erzeugt.</div><button class="btn" id="share">Link kopieren</button></div>`;
+}
+function renderChat(){
+  $('#title').textContent='Chat';$('#sub').textContent='Alle Event-Diskussionen';
+  const all=S.events.flatMap(e=>e.chat.map(([n,t])=>({e,n,t})));
+  view.innerHTML=all.map(({e,n,t})=>`<div class="card"><div class="m">${esc(e.title)}</div><div style="margin-top:4px"><b>${esc(n)}</b> ${esc(t)}</div></div>`).join('')||'<p class="m">Noch keine Nachrichten.</p>';
+}
+
+document.addEventListener('click',ev=>{
+  const t=ev.target.closest('[data-open],[data-rsvp],[data-tab],#back,#fab,#del,#remind,#share');if(!t)return;
+  const e=S.events.find(x=>x.id===openId);
+  if(t.dataset.open){openId=+t.dataset.open;confirmDel=false}
+  else if(t.dataset.rsvp){if(e.rsvp[ME]===t.dataset.rsvp)delete e.rsvp[ME];else e.rsvp[ME]=t.dataset.rsvp;save()}
+  else if(t.dataset.tab){tab=t.dataset.tab;openId=null;creating=false}
+  else if(t.id==='back'){openId=null;creating=false}
+  else if(t.id==='fab'){creating=true}
+  else if(t.id==='del'){if(!confirmDel){confirmDel=true}else{S.events=S.events.filter(x=>x!==e);openId=null;confirmDel=false;save()}}
+  else if(t.id==='remind'){t.textContent='Erinnerung gesendet (Mockup)';t.disabled=true;return}
+  else if(t.id==='share'){try{navigator.clipboard.writeText('https://teamup.example/einladung/büro-united').catch(()=>{})}catch(e){}t.textContent='Link kopiert (Mockup)';return}
+  render();scrollTo(0,0);
+});
+document.addEventListener('submit',ev=>{
+  ev.preventDefault();const f=ev.target,d=Object.fromEntries(new FormData(f));
+  if(f.id==='nf'){const id=Date.now();S.events.push({id,title:d.title,date:d.date,place:d.place,note:d.note,rsvp:{[ME]:'ok'},chat:[]});creating=false;openId=id}
+  else if(f.id==='cf'){if(!d.t.trim())return;S.events.find(x=>x.id===openId).chat.push([ME,d.t])}
+  else if(f.id==='mf'){S.members.push(d.n.trim())}
+  save();render();
+});
+render();
+</script>

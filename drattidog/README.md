@@ -56,3 +56,7 @@ Die Spalte `id` enthält stabile externe IDs (`dratti_product_<Ecwid-ID>` usw.).
 - **Eigene Seite:** `/gewaehrleistung`
 - **Bestellbestätigung per E-Mail:** Hinweis und Link am Ende der Mail-Vorlage „Sales: Order Confirmation“
 - Außerdem zeigt die Website seitdem Bruttopreise an (`show_line_subtotals_tax_selection = tax_included`).
+
+## Kontakt- und Adressdaten
+
+`scripts/contact_data.py` übernimmt die Daten aus dem Impressum von www.dratti-dog.de: Inhaberin, Anschrift, Telefon, Fax, E-Mail und USt-IdNr. Es trägt sie in die Unternehmensdaten ein und ersetzt die Odoo-Platzhalter in Header, Footer und auf der Kontaktseite. Dafür legt es website-spezifische Kopien der Standardansichten an.

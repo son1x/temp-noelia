@@ -51,8 +51,8 @@ Die Spalte `id` enthält stabile externe IDs (`dratti_product_<Ecwid-ID>` usw.).
 
 `scripts/legal_notice.py <png>` baut den offiziellen deutschen Hinweis der EU-Kommission (DVO (EU) 2025/1960, Datei in `gewaehrleistung/`) in Odoo 19 ein. Platzierung nach den Praxisleitlinien der Kommission:
 
-- **Produktseite:** Link „Ihre gesetzlichen Gewährleistungsrechte“ unter dem Warenkorb-Button, öffnet beim Klick den vollständigen Hinweis in Farbe mit klickbarem Link auf europa.eu/youreurope/garantien
-- **Warenkorb und alle Checkout-Schritte:** derselbe Link
+- **Produktseite:** vollständiger Hinweis in Farbe und voller Größe (max. 800 px) direkt auf der Seite unter dem Produktbereich, nicht verschachtelt (laut Händlerbund ist nur das Garantie-Label verschachtelt zulässig), mit klickbarem Link auf europa.eu/youreurope/garantien. Der Link „Ihre gesetzlichen Gewährleistungsrechte“ unter dem Warenkorb-Button springt dorthin.
+- **Warenkorb und alle Checkout-Schritte:** zusätzlicher Link, der den Hinweis in einem Fenster öffnet
 - **Eigene Seite:** `/gewaehrleistung`
 - **Bestellbestätigung per E-Mail:** Hinweis und Link am Ende der Mail-Vorlage „Sales: Order Confirmation“
 - Außerdem zeigt die Website seitdem Bruttopreise an (`show_line_subtotals_tax_selection = tax_included`).

@@ -59,10 +59,20 @@ upsert("ir.ui.view","view_legal_guarantee_link",{"name":"Dratti-Dog: EU Gewährl
 upsert("ir.ui.view","view_legal_guarantee_modal",{"name":"Dratti-Dog: EU Gewährleistungshinweis (Modal)","type":"qweb","key":f"{MOD}.legal_guarantee_modal","arch_db":modal})
 MODAL_X=f'<xpath expr="//div[@id=\'wrap\']" position="inside"><t t-call="{MOD}.legal_guarantee_modal"/></xpath>'
 
-# 2) Produktseite: Link direkt unter dem Warenkorb-Button
+# 2) Produktseite: vollständiger Hinweis in voller Größe direkt auf der Seite (nicht verschachtelt),
+#    unter dem Produktbereich; Link beim Warenkorb-Button springt dorthin.
+full=f'''<t t-name="{MOD}.legal_guarantee_full">
+  <section id="o_dd_legal_guarantee_full" class="container mt-5 mb-4" style="scroll-margin-top:100px" aria-labelledby="o_dd_legal_guarantee_full_title">
+    <h2 id="o_dd_legal_guarantee_full_title" class="h4 mb-3">Gesetzliche Gewährleistung</h2>
+    <div style="max-width:800px">{notice_block}</div>
+  </section>
+</t>'''
+upsert("ir.ui.view","view_legal_guarantee_full",{"name":"Dratti-Dog: EU Gewährleistungshinweis (vollständig)","type":"qweb","key":f"{MOD}.legal_guarantee_full","arch_db":full})
+anchor_link='''<div class="o_dd_legal_guarantee my-3"><a href="#o_dd_legal_guarantee_full" class="text-decoration-underline">Ihre gesetzlichen Gewährleistungsrechte</a></div>'''
 upsert("ir.ui.view","view_legal_guarantee_product",{"name":"Dratti-Dog: Gewährleistungshinweis Produktseite","type":"qweb",
   "inherit_id":vid("website_sale.product"),"key":f"{MOD}.legal_guarantee_product","active":True,
-  "arch_db":f'<data><xpath expr="//t[@t-call=\'website_sale.cta_wrapper\']" position="after"><t t-call="{MOD}.legal_guarantee_link"/></xpath>{MODAL_X}</data>'})
+  "arch_db":f'<data><xpath expr="//t[@t-call=\'website_sale.cta_wrapper\']" position="after">{anchor_link}</xpath>'
+            f'<xpath expr="//div[@id=\'product_detail_main\']" position="after"><t t-call="{MOD}.legal_guarantee_full"/></xpath></data>'})
 
 # 3) Warenkorb + alle Checkout-Schritte (linke Spalte)
 upsert("ir.ui.view","view_legal_guarantee_checkout",{"name":"Dratti-Dog: Gewährleistungshinweis Checkout","type":"qweb",

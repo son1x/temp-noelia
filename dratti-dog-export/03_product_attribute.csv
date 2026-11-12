@@ -1,0 +1,14 @@
+id,name,create_variant,value_ids/id,value_ids/name
+dratti_attr_steg,Steg,always,dratti_attrval_steg__geteilter_steg,Geteilter Steg
+,,,dratti_attrval_steg__normaler_steg,Normaler Steg
+dratti_attr_druckfarbe,Druckfarbe,always,dratti_attrval_druckfarbe__schwarz,Schwarz
+,,,dratti_attrval_druckfarbe__weis,Weis
+,,,dratti_attrval_druckfarbe__neon_gelb,Neon gelb
+,,,dratti_attrval_druckfarbe__neon_pink,Neon pink
+,,,dratti_attrval_druckfarbe__dunkelblau,Dunkelblau
+dratti_attr_taschenfarbe,Taschenfarbe,always,dratti_attrval_taschenfarbe__natur,Natur
+,,,dratti_attrval_taschenfarbe__schwarz,Schwarz
+dratti_attr_spruch,Spruch,always,dratti_attrval_spruch__yoga,Yoga
+,,,dratti_attrval_spruch__fremde,Fremde
+,,,dratti_attrval_spruch__oskar,Oskar
+,,,dratti_attrval_spruch__karma,Karma

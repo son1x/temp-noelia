@@ -1,0 +1,19 @@
+id,name,parent_id/id
+dratti_categ_root,Dratti-Dog,product.product_category_all
+dratti_categ_175148084,Adventkalender 2025,dratti_categ_root
+dratti_categ_161340569,Galerie 1,dratti_categ_root
+dratti_categ_160231257,Galerie 2,dratti_categ_root
+dratti_categ_146578251,SALE,dratti_categ_160231257
+dratti_categ_163851253,Halsbänder,dratti_categ_root
+dratti_categ_158234252,Kuscheldecken/Sofadecken,dratti_categ_root
+dratti_categ_164403751,Sofortkäufe,dratti_categ_root
+dratti_categ_145627875,Dratti Dog Geschirr,dratti_categ_root
+dratti_categ_145635258,Dratti Dog XL,dratti_categ_145627875
+dratti_categ_145627874,Dratti Dog Gr XXS,dratti_categ_145627875
+dratti_categ_145635256,Dratti Dog Gr XS,dratti_categ_145627875
+dratti_categ_145635257,Dratti Dog Gr S,dratti_categ_145627875
+dratti_categ_145602997,Dratti Dog Gr M,dratti_categ_145627875
+dratti_categ_145603246,Dratti Dog Gr L,dratti_categ_145627875
+dratti_categ_145633515,Dratti Dog Safety,dratti_categ_root
+dratti_categ_145623340,Dratti Dog Leine,dratti_categ_root
+dratti_categ_204341288,TASCHEN,dratti_categ_root

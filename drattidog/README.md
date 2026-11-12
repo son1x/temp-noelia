@@ -18,7 +18,13 @@ Quelle: https://www.dratti-dog.de/shop/ (IONOS MyWebsite Now / Ecwid, Store-ID 8
 | `dratti-dog_produkte_uebersicht.xlsx` | – | Gesamtübersicht zum Prüfen: Produkte, Kategorien, Optionen, Bestand, Links |
 | `bilder/` | – | Alle Produktbilder lokal (1500 px), Dateiname `<SKU>_<Ecwid-ID>_<Nr>.jpg` |
 
-## Import-Reihenfolge in Odoo
+## Skripte (`scripts/`)
+
+- `fetch.py <raw.json>`: lädt alle Kategorien und Produkte über die Ecwid-Storefront-API
+- `build.py <raw.json> <ausgabeordner>`: erzeugt die CSV-Dateien und die Excel-Übersicht
+- `push.py <raw.json> <bilderordner> [anzahl]`: überträgt alles direkt über die Odoo-19-JSON-2-API in die Instanz: Kategorien, Attribute inkl. Aufpreise, Produkte, Bilder und Bestand. Externe IDs im Modul `drattidog_import` sorgen dafür, dass ein erneuter Lauf aktualisiert statt dupliziert. Der API-Schlüssel wird als `Authorization: Bearer`-Header erwartet.
+
+## Import-Reihenfolge in Odoo (alternativ per CSV)
 
 Jeweils in der Listenansicht des Modells: **⚙ › Datensätze importieren**, CSV hochladen, Trennzeichen Komma, Kodierung UTF-8. Die Spaltenköpfe sind technische Feldnamen und werden automatisch zugeordnet.
 

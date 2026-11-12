@@ -13,7 +13,7 @@ Quelle: https://www.dratti-dog.de/shop/ (IONOS MyWebsite Now / Ecwid, Store-ID 8
 | `03_product_attribute.csv` | Verkauf › Konfiguration › Attribute (`product.attribute`) | Steg, Druckfarbe, Taschenfarbe, Spruch inkl. Werte |
 | `04_product_template.csv` | Produkte (`product.template`) | Name, Artikelnr., Preis, Streichpreis, Kategorien, Beschreibung (HTML), Hauptbild |
 | `05_product_image.csv` | Zusätzliche Produktbilder (`product.image`) | 223 weitere Bilder je Produkt |
-| `06_product_template_attribute_lines.csv` | Produkte (`product.template`) | Ordnet 15 Produkten ihre Optionen zu → Varianten |
+| `06_product_template_attribute_lines.csv` | Produkte (`product.template`) | Ordnet 14 Produkten ihre Optionen zu → Varianten |
 | `07_aufpreise_varianten_info.csv` | – (nur Info) | Aufpreise der Optionen, z. B. „Geteilter Steg“ +5,00 € |
 | `dratti-dog_produkte_uebersicht.xlsx` | – | Gesamtübersicht zum Prüfen: Produkte, Kategorien, Optionen, Bestand, Links |
 | `bilder/` | – | Alle Produktbilder lokal (1500 px), Dateiname `<SKU>_<Ecwid-ID>_<Nr>.jpg` |

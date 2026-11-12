@@ -46,3 +46,13 @@ Die Spalte `id` enthält stabile externe IDs (`dratti_product_<Ecwid-ID>` usw.).
 - **Bestand:** 201 von 249 Produkten sind im Shop „ausverkauft“, nur 48 haben Bestand. Bestände stehen in der Excel-Übersicht. Sie werden nicht automatisch importiert, weil Odoo Lagerbestände über die Inventur bucht.
 - **„Galerie 1“, „Galerie 2“, „Adventkalender 2025“** enthalten überwiegend ausverkaufte Einzelstücke bzw. Referenzarbeiten. Vor dem Import prüfen, ob diese übernommen werden sollen. Viele Produkte liegen in mehreren Kategorien gleichzeitig.
 - **Option „Steg“:** Im Shop heißt sie mal „Geteilter Steg“, mal „Geteilter steg“, teils mit Tippfehler („Notmaler steg“). Sie wurde zu einem Attribut **Steg** mit den Werten *Normaler Steg* und *Geteilter Steg* vereinheitlicht.
+
+## EU-Hinweis „Gesetzliche Gewährleistung“ (seit 27.09.2026 Pflicht)
+
+`scripts/legal_notice.py <png>` baut den offiziellen deutschen Hinweis der EU-Kommission (DVO (EU) 2025/1960, Datei in `gewaehrleistung/`) in Odoo 19 ein. Platzierung nach den Praxisleitlinien der Kommission:
+
+- **Produktseite:** Link „Ihre gesetzlichen Gewährleistungsrechte“ unter dem Warenkorb-Button, öffnet beim Klick den vollständigen Hinweis in Farbe mit klickbarem Link auf europa.eu/youreurope/garantien
+- **Warenkorb und alle Checkout-Schritte:** derselbe Link
+- **Eigene Seite:** `/gewaehrleistung`
+- **Bestellbestätigung per E-Mail:** Hinweis und Link am Ende der Mail-Vorlage „Sales: Order Confirmation“
+- Außerdem zeigt die Website seitdem Bruttopreise an (`show_line_subtotals_tax_selection = tax_included`).

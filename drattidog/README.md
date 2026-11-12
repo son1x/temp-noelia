@@ -60,3 +60,7 @@ Die Spalte `id` enthält stabile externe IDs (`dratti_product_<Ecwid-ID>` usw.).
 ## Kontakt- und Adressdaten
 
 `scripts/contact_data.py` übernimmt die Daten aus dem Impressum von www.dratti-dog.de: Inhaberin, Anschrift, Telefon, Fax, E-Mail und USt-IdNr. Es trägt sie in die Unternehmensdaten ein und ersetzt die Odoo-Platzhalter in Header, Footer und auf der Kontaktseite. Dafür legt es website-spezifische Kopien der Standardansichten an.
+
+## Impressum, Footer und Copyright
+
+`scripts/site_texts.py` legt die Seite `/impressum` mit dem Text aus dem alten Shop an. Zwei Stellen sind dabei angepasst: Statt § 5 TMG steht jetzt § 5 DDG, und der Hinweis auf die EU-OS-Plattform fehlt, weil sie seit dem 20.07.2025 abgeschaltet ist. Außerdem ersetzt das Skript im Footer die Odoo-Vorlagentexte: Links zu Shop, Kontakt, Gewährleistung und Impressum, ein Text „Über Dratti-Dog“ und die Kontaktdaten. Die Social-Media-Platzhalter entfernt es, und im Copyright steht jetzt „Dratti-Dog - Haustierbedarf“.
